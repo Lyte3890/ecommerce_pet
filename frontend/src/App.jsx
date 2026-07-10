@@ -115,7 +115,7 @@ function App() {
 
   const getImageUrl = (url) => {
     if (!url) return null;
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost';
     return url.startsWith('http') ? url : `${baseUrl}${url}`;
   };
 

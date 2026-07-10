@@ -54,18 +54,16 @@ function Checkout({ cart, cartTotal, setCart, getImageUrl }) {
       console.log("STEP 1: Requesting token...")
       const token = await getToken()
 
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${baseUrl}/api/v1/checkout`, {console.log("STEP 2: Sending order data with shipping details...")
-             method: 'POST',
+      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost';
+      console.log("STEP 2: Sending order data with shipping details...");
+      const response = await fetch(`${API_BASE_URL}/api/v1/checkout`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
-        body: JSON.stringify({ 
-          items: cart,
-          shipping_address: shippingData
-        })
-      })
+            'Content-Type': 'application/json', 
+    },
+    body: JSON.stringify({ 
+    })
+});
 
       if (!response.ok) throw new Error(`Server error: ${response.status}`)
 
