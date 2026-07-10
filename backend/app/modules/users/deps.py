@@ -3,9 +3,9 @@ from fastapi.security import OAuth2PasswordBearer
 import jwt
 from sqlalchemy.orm import Session
 
-from db.database import get_db
+from app.db.database import get_db
 from modules.users import models
-from core.security import SECRET_KEY, ALGORITHM
+from app.core.security import SECRET_KEY, ALGORITHM
 
 # This tells FastAPI where the client should send the email/password to get a token.
 # It automatically adds the "Authorize" button to Swagger UI!

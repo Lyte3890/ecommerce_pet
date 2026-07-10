@@ -7,10 +7,10 @@ from slowapi.errors import RateLimitExceeded
 from dotenv import load_dotenv
 
 # Import routers from your modular architecture
-from modules.products.router import router as product_router
-from modules.users.router import router as user_router
-from modules.cart.router import router as cart_router
-from modules.orders.router import router as order_router
+from app.modules.products.router import router as product_router
+from app.modules.users.router import router as user_router
+from app.modules.cart.router import router as cart_router
+from app.modules.orders.router import router as order_router
 
 load_dotenv(override=True)
 
@@ -26,7 +26,7 @@ app = FastAPI(
     redoc_url=None
 )
 
-from db.database import engine, Base
+from app.db.database import engine, Base
 
 @app.on_event("startup")
 async def init_tables():

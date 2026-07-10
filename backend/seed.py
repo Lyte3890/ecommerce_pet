@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'app')))
 load_dotenv()
 
-from db.database import engine
+from app.db.database import engine
 from modules.products import models
 
 async def seed_data():

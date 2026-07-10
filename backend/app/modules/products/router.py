@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from modules.products.models import Category
+from app.modules.products.models import Category
 from typing import List
 
-from db.database import get_db
-from modules.products.models import Product
-from modules.products.schemas import ProductCreate, ProductResponse
+from app.db.database import get_db
+from app.modules.products.models import Product
+from app.modules.products.schemas import ProductCreate, ProductResponse
 
 router = APIRouter()
 

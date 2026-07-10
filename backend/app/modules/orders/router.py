@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Dict, Any
 
-from modules.users.auth import verify_token
+from app.modules.users.auth import verify_token
 
 router = APIRouter()
 
