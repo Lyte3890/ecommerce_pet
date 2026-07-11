@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { Show, SignInButton, UserButton, useAuth } from "@clerk/react"
-import Catalog from './pages/Catalog'
-import Home from './pages/Home'
-import ProductDetail from './pages/ProductDetail'
-import Favorites from './pages/Favorites'
-import Compare from './pages/Compare'
-import Profile from './pages/Profile'
-import Checkout from './pages/Checkout'
+
+// CODE SPLITTING
+const Catalog = lazy(() => import('./pages/Catalog'))
+const Home = lazy(() => import('./pages/Home'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+const Favorites = lazy(() => import('./pages/Favorites'))
+const Compare = lazy(() => import('./pages/Compare'))
+const Profile = lazy(() => import('./pages/Profile'))
+const Checkout = lazy(() => import('./pages/Checkout'))
 
 function App() {
   const [cart, setCart] = useState([])
@@ -115,7 +117,7 @@ function App() {
 
   const getImageUrl = (url) => {
     if (!url) return null;
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost';
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     return url.startsWith('http') ? url : `${baseUrl}${url}`;
   };
 
@@ -174,16 +176,18 @@ function App() {
         </div>
       </header>
 
-      {/* ROUTING SYSTEM */}
-      <Routes>
-        <Route path="/" element={<Home addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
-        <Route path="/catalog" element={<Catalog addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
-        <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
-        <Route path="/favorites" element={<Favorites addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
-        <Route path="/compare" element={<Compare addToCart={addToCart} getImageUrl={getImageUrl} compareList={compareList} toggleCompare={toggleCompare} />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/checkout" element={<Checkout cart={cart} cartTotal={cartTotal} setCart={setCart} getImageUrl={getImageUrl} />} />
-      </Routes>
+      {/* ROUTING SYSTEM З ПІДТРИМКОЮ SUSPENSE */}
+      <Suspense fallback={<div className="flex h-[80vh] items-center justify-center font-black animate-pulse text-2xl tracking-widest">LOADING_SYSTEM...</div>}>
+        <Routes>
+          <Route path="/" element={<Home addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
+          <Route path="/catalog" element={<Catalog addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
+          <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
+          <Route path="/favorites" element={<Favorites addToCart={addToCart} getImageUrl={getImageUrl} favorites={favorites} toggleFavorite={toggleFavorite} compareList={compareList} toggleCompare={toggleCompare} />} />
+          <Route path="/compare" element={<Compare addToCart={addToCart} getImageUrl={getImageUrl} compareList={compareList} toggleCompare={toggleCompare} />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/checkout" element={<Checkout cart={cart} cartTotal={cartTotal} setCart={setCart} getImageUrl={getImageUrl} />} />
+        </Routes>
+      </Suspense>
 
       {/* SLIDE-OVER CART */}
       {isCartOpen && (
@@ -257,7 +261,7 @@ function App() {
         {/* Island 2: Main Features Group */}
         <div className="flex-1 bg-white dark:bg-black backdrop-blur-xl border-2 border-gray-100 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-evenly px-2">
           <Link to="/catalog" className={`flex flex-col items-center justify-center w-1/3 h-full transition-all ${location.pathname.includes('/catalog') ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
-            <svg className="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+            <svg className="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             <span className="text-[9px] font-bold">Catalog</span>
           </Link>
 
