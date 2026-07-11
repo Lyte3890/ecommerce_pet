@@ -2,7 +2,7 @@ import { lazy, Suspense, useState, useEffect } from 'react'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import { Show, SignInButton, UserButton, useAuth } from "@clerk/react"
 
-// CODE SPLITTING
+// CODE SPLITTING: Оптимізація завантаження компонентів
 const Catalog = lazy(() => import('./pages/Catalog'))
 const Home = lazy(() => import('./pages/Home'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
@@ -117,6 +117,7 @@ function App() {
 
   const getImageUrl = (url) => {
     if (!url) return null;
+    // Використовуємо динамічний бекенд для завантаження зображень
     const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     return url.startsWith('http') ? url : `${baseUrl}${url}`;
   };
@@ -260,24 +261,39 @@ function App() {
 
         {/* Island 2: Main Features Group */}
         <div className="flex-1 bg-white dark:bg-black backdrop-blur-xl border-2 border-gray-100 dark:border-gray-800 rounded-3xl shadow-2xl flex items-center justify-evenly px-2">
-          <Link to="/catalog" className={`flex flex-col items-center justify-center w-1/3 h-full transition-all ${location.pathname.includes('/catalog') ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
+          <Link to="/catalog" className={`flex flex-col items-center justify-center w-1/4 h-full transition-all ${location.pathname.includes('/catalog') ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
             <svg className="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
             <span className="text-[9px] font-bold">Catalog</span>
           </Link>
 
-          <button onClick={() => setIsCartOpen(true)} className="flex flex-col items-center justify-center w-1/3 h-full transition-all text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white relative">
+          <Link to="/compare" className={`flex flex-col items-center justify-center w-1/4 h-full transition-all relative ${location.pathname === '/compare' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
+            <svg className="w-5 h-5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
+            <span className="text-[9px] font-bold">Compare</span>
+            {compareList.length > 0 && (
+              <span className="absolute top-1 right-1.5 w-3.5 h-3.5 bg-black dark:bg-white text-white dark:text-black rounded-full text-[8px] font-black flex items-center justify-center">
+                {compareList.length}
+              </span>
+            )}
+          </Link>
+
+          <button onClick={() => setIsCartOpen(true)} className="flex flex-col items-center justify-center w-1/4 h-full transition-all text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white relative">
             <svg className="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             <span className="text-[9px] font-bold">Cart</span>
             {cartCount > 0 && (
-              <span className="absolute top-1.5 right-2 w-4 h-4 bg-black dark:bg-white text-white dark:text-black rounded-full text-[9px] font-black flex items-center justify-center">
+              <span className="absolute top-1 right-1.5 w-3.5 h-3.5 bg-black dark:bg-white text-white dark:text-black rounded-full text-[8px] font-black flex items-center justify-center">
                 {cartCount}
               </span>
             )}
           </button>
 
-          <Link to="/favorites" className={`flex flex-col items-center justify-center w-1/3 h-full transition-all ${location.pathname === '/favorites' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
+          <Link to="/favorites" className={`flex flex-col items-center justify-center w-1/4 h-full transition-all relative ${location.pathname === '/favorites' ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600 hover:text-black dark:hover:text-white'}`}>
             <svg className="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             <span className="text-[9px] font-bold">Favs</span>
+            {favorites.length > 0 && (
+              <span className="absolute top-1 right-1.5 w-3.5 h-3.5 bg-black dark:bg-white text-white dark:text-black rounded-full text-[8px] font-black flex items-center justify-center">
+                {favorites.length}
+              </span>
+            )}
           </Link>
         </div>
 
