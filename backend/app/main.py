@@ -25,12 +25,11 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url=None
-)
+) # <-- ВИПРАВЛЕНО: Закрита дужка для ініціалізації FastAPI
 
 # ==========================================
 # CORS CONFIGURATION (Dynamic via .env)
 # ==========================================
-
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://store.skuriatin.com")
 ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins_env.split(",")]
 
