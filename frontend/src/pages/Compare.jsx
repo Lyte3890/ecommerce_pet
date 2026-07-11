@@ -63,7 +63,7 @@ function Compare({ addToCart, getImageUrl, compareList, toggleCompare }) {
             
             <thead>
               <tr>
-                <th className="p-6 border-b border-r border-gray-200 dark:border-gray-800 w-1/4 bg-gray-50 dark:bg-gray-900/50 align-bottom min-w-[150px] md:min-w-[200px] sticky left-0 z-20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-none">
+                <th className="p-6 border-b border-r border-gray-200 dark:border-gray-800 w-1/4 bg-gray-50 dark:bg-gray-900 align-bottom min-w-[150px] md:min-w-[200px] sticky left-0 z-20 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] dark:shadow-none">
                   <span className="text-xs font-black tracking-widest uppercase opacity-50">
                     {compareList.length} Items Selected
                   </span>
@@ -101,7 +101,7 @@ function Compare({ addToCart, getImageUrl, compareList, toggleCompare }) {
                         <button 
                           onClick={() => addToCart(product)}
                           disabled={product.stock < 1}
-                          className="bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 rounded-xl text-sm font-bold hover:scale-105 active:scale-95 disabled:opacity-30 disabled:hover:scale-100 transition-transform"
+                          className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg text-xs font-bold hover:scale-105 active:scale-95 disabled:opacity-30 disabled:hover:scale-100 transition-transform"
                         >
                           {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
                         </button>
@@ -111,7 +111,7 @@ function Compare({ addToCart, getImageUrl, compareList, toggleCompare }) {
                 ))}
 
                 {Array.from({ length: Math.max(0, 3 - compareList.length) }).map((_, i) => (
-                  <th key={`empty-header-${i}`} className="p-6 border-b border-r border-gray-200 dark:border-gray-800 last:border-r-0 w-1/4 min-w-[260px] bg-gray-50/50 dark:bg-gray-900/20">
+                  <th key={`empty-header-${i}`} className="p-6 border-b border-r border-gray-200 dark:border-gray-800 last:border-r-0 w-1/4 min-w-[260px] bg-gray-50 dark:bg-gray-900">
                      <Link to="/catalog" className="h-full min-h-[300px] flex flex-col items-center justify-center opacity-40 hover:opacity-100 border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-black dark:hover:border-white rounded-2xl p-8 text-center transition-all cursor-pointer group">
                         <div className="w-12 h-12 bg-gray-200 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
@@ -134,7 +134,7 @@ function Compare({ addToCart, getImageUrl, compareList, toggleCompare }) {
                 displayedKeys.map((key, index) => {
                   const isDiff = specDifferences[key];
                   return (
-                    <tr key={key} className={`group ${index % 2 === 0 ? 'bg-white dark:bg-black' : 'bg-gray-50/50 dark:bg-gray-900/30'} hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors`}>
+                    <tr key={key} className={`group ${index % 2 === 0 ? 'bg-white dark:bg-black' : 'bg-gray-50 dark:bg-gray-900'} hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors`}>
                       
                       <td className="p-4 px-6 border-b border-r border-gray-200 dark:border-gray-800 font-bold text-sm md:text-base tracking-wide text-gray-500 dark:text-gray-400 sticky left-0 z-10 bg-inherit shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] dark:shadow-none">
                         {key}
@@ -150,7 +150,7 @@ function Compare({ addToCart, getImageUrl, compareList, toggleCompare }) {
                       })}
 
                       {Array.from({ length: Math.max(0, 3 - compareList.length) }).map((_, i) => (
-                        <td key={`empty-td-${i}`} className="p-4 border-b border-r border-gray-200 dark:border-gray-800 last:border-r-0 bg-gray-50/50 dark:bg-gray-900/20"></td>
+                        <td key={`empty-td-${i}`} className="p-4 border-b border-r border-gray-200 dark:border-gray-800 last:border-r-0 bg-gray-50 dark:bg-gray-900"></td>
                       ))}
                     </tr>
                   )
