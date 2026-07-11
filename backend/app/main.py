@@ -11,6 +11,7 @@ from app.modules.products.router import router as product_router
 from app.modules.users.router import router as user_router
 from app.modules.cart.router import router as cart_router
 from app.modules.orders.router import router as order_router
+from app.db.database import engine, Base
 
 load_dotenv(override=True)
 
@@ -24,41 +25,34 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url=None
-origins = [
-    "http://localhost:5173", 
-    "https://store.skuriatin.com", 
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
 )
 
+# ==========================================
+# CORS CONFIGURATION (Dynamic via .env)
+# ==========================================
 
-from app.db.database import engine, Base
-
-@app.on_event("startup")
-async def init_tables():
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-        print("\n=== TABLES CREATED SUCCESSFULY ===\n")
-
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173")
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,https://store.skuriatin.com")
 ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins_env.split(",")]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ==========================================
+# RATE LIMITING & DATABASE INIT
+# ==========================================
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+@app.on_event("startup")
+async def init_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+        print("\n=== TABLES CREATED SUCCESSFULY ===\n")
 
 # ==========================================
 # SYSTEM ENDPOINTS & ROUTERS
